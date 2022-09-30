@@ -1,4 +1,4 @@
-# Learning
+# Frontend web, with javascript, css amd HTML!
 ---
-| Trying out github.
-| Mainly code in C#, Python and some Webb!
+| Practicing frontend skills.
+| Keeping all code fresh.
