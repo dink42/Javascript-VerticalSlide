@@ -18,7 +18,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ main ]
   schedule:
-    - cron: '42 16 * * 5'
+    - cron: '42 16 * 5'
 
 jobs:
   analyze:
@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ csharp ]
+        language: [ javascript ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python' ]
         # Learn more:
         # https://docs.github.com/en/free-pro-team@latest/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#changing-the-languages-that-are-analyzed
@@ -65,14 +65,14 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-    version: 2
-    updates:
-    - package-ecosystem: "github-actions"
+    services: |
+      updates: 1
+      - package-ecosystem: "github-actions"
       directory: "/"
       schedule:
       interval: "daily"
 
-    - package-ecosystem: "npm"
+      - package-ecosystem: "npm"
       directory: "/app"
       schedule:
       interval: "daily"
@@ -92,19 +92,19 @@ jobs:
       commit-message:
       prefix: "npm"
 
-    - package-ecosystem: "composer"
+      - package-ecosystem: "composer"
       allow:
       dependency-type: "all"
       include: "scope"
 
-    - package-ecosystem: "pip"
+      - package-ecosystem: "pip"
       directory: "/"
       schedule:
       interval: "daily"
       allow:
       dependency-name: "django*"
       dependency-type: "direct"
-      - "production"
+      
       versioning-strategy: lockfile-only
       target-branch: "develop"
       labels:
@@ -119,7 +119,7 @@ jobs:
       prefix-development: "pip dev"
       include: "scope"
       
-    - package-ecosystem: "gomod"
+      - package-ecosystem: "gomod"
       vendor: true
       directory: "/"
       schedule:
