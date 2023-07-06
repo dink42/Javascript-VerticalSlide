@@ -1,14 +1,3 @@
-# For most projects, this workflow file will not need changing; you simply need
-# to commit it to your repository.
-#
-# You may wish to alter this file to override the set of languages analyzed,
-# or to provide custom queries or build logic.
-#
-# ******** NOTE ********
-# We have attempted to detect the languages in your repository. Please check
-# the `language` matrix defined below to confirm you have the correct set of
-# supported CodeQL languages.
-#
 name: "CodeQL"
 
 on:
@@ -39,7 +28,7 @@ jobs:
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         # If you wish to specify custom queries, you can do so here or in a config file.
@@ -62,65 +51,128 @@ jobs:
     - run: |
        make bootstrap
        make release
-
+       
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      services: development@v2"
+       uses: github/codeql-action/analyze@v2
+       services: "development@v2"
+         
+       - package-ecosystem: "github-actions"
+         directory: "/"
+         schedule:
+         interval: "daily"
+         
+       - package-ecosystem: "npm"
+         directory: "/app"
+         schedule:
+         interval: "daily"
+         day: "sunday"
+         time: "09:00"
+         timezone: "Europe/Stockholm"
+         versioning-strategy: widen
+         rebase-strategy: "disabled"
+         open-pull-requests-limit: 0
+         milestone: 4
+         labels:
+         - "npm"
+         - "dependencies"
+         ignore:
+         dependency-name: "express"
+         versions: ["4.x", "5.x"]
+         commit-message:
+         prefix: "npm"
+         
+       - package-ecosystem: "composer"
+         allow:
+         dependency-type: "all"
+         include: "scope"
+         
+       - package-ecosystem: "pip"
+         directory: "/"
+         schedule:
+         interval: "daily"
+         allow:
+         dependency-name: "django*"
+         dependency-type: "direct"
+         versioning-strategy: lockfile-only
+         target-branch: "develop"
+         labels:
+         - "pip dependencies"
+         reviewers:
+         - "octocat"
+         - "my-username"
+         - "my-org/python-team"
+         open-pull-requests-limit: 10
+         commit-message:
+         prefix: "pip prod"
+         prefix-development: "pip dev"
+         include: "scope"
+         
+       - package-ecosystem: "gomod"
+         vendor: true
+         directory: "/"
+         schedule:
+         interval: "weekly"
+
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        services: development@v2"
     
-    - package-ecosystem: "github-actions"
-      directory: "/"
-      schedule:
-      interval: "daily"
+      - package-ecosystem: "github-actions"
+        directory: "/"
+        schedule:
+        interval: "daily"
 
-    - package-ecosystem: "npm"
-      directory: "/app"
-      schedule:
-      interval: "daily"
-      day: "sunday"
-      time: "09:00"
-      timezone: "Europe/Stockholm"
-      versioning-strategy: widen
-      rebase-strategy: "disabled"
-      open-pull-requests-limit: 0
-      milestone: 4
-      labels:
-      - "npm"
-      - "dependencies"
-      ignore:
-      dependency-name: "express"
-      versions: ["4.x", "5.x"]
-      commit-message:
-      prefix: "npm"
+      - package-ecosystem: "npm"
+        directory: "/app"
+        schedule:
+        interval: "daily"
+        day: "sunday"
+        time: "09:00"
+        timezone: "Europe/Stockholm"
+        versioning-strategy: widen
+        rebase-strategy: "disabled"
+        open-pull-requests-limit: 0
+        milestone: 4
+        labels:
+        - "npm"
+        - "dependencies"
+       ignore:
+       dependency-name: "express"
+       versions: ["4.x", "5.x"]
+       commit-message:
+       prefix: "npm"
 
-    - package-ecosystem: "composer"
-      allow:
-      dependency-type: "all"
-      include: "scope"
+      - package-ecosystem: "composer"
+        allow:
+        dependency-type: "all"
+        include: "scope"
 
-    - package-ecosystem: "pip"
-      directory: "/"
-      schedule:
-      interval: "daily"
-      allow:
-      dependency-name: "django*"
-      dependency-type: "direct"
+      - package-ecosystem: "pip"
+        directory: "/"
+        schedule:
+        interval: "daily"
+        allow:
+        dependency-name: "django*"
+        dependency-type: "direct"
       
-      versioning-strategy: lockfile-only
-      target-branch: "develop"
-      labels:
-      - "pip dependencies"
-      reviewers:
-      - "octocat"
-      - "my-username"
-      - "my-org/python-team"
-      open-pull-requests-limit: 10
-      commit-message:
-      prefix: "pip prod"
-      prefix-development: "pip dev"
-      include: "scope"
+        versioning-strategy: lockfile-only
+        target-branch: "develop"
+        labels:
+        - "pip dependencies"
+        reviewers:
+        - "octocat"
+        - "my-username"
+        - "my-org/python-team"
+        open-pull-requests-limit: 10
+        commit-message:
+        prefix: "pip prod"
+        prefix-development: "pip dev"
+        include: "scope"
       
-    - package-ecosystem: "gomod"
-      vendor: true
-      directory: "/"
-      schedule:
-      interval: "weekly"
+      - package-ecosystem: "gomod"
+        vendor: true
+        directory: "/"
+        schedule:
+        interval: "weekly"
+
