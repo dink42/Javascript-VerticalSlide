@@ -50,7 +50,7 @@ jobs:
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+      uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
@@ -64,15 +64,15 @@ jobs:
        make release
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
-    services: development@v1"
+      uses: github/codeql-action/analyze@v2
+      services: development@v2"
     
-      - package-ecosystem: "github-actions"
+    - package-ecosystem: "github-actions"
       directory: "/"
       schedule:
       interval: "daily"
 
-      - package-ecosystem: "npm"
+    - package-ecosystem: "npm"
       directory: "/app"
       schedule:
       interval: "daily"
@@ -92,12 +92,12 @@ jobs:
       commit-message:
       prefix: "npm"
 
-      - package-ecosystem: "composer"
+    - package-ecosystem: "composer"
       allow:
       dependency-type: "all"
       include: "scope"
 
-      - package-ecosystem: "pip"
+    - package-ecosystem: "pip"
       directory: "/"
       schedule:
       interval: "daily"
@@ -119,7 +119,7 @@ jobs:
       prefix-development: "pip dev"
       include: "scope"
       
-      - package-ecosystem: "gomod"
+    - package-ecosystem: "gomod"
       vendor: true
       directory: "/"
       schedule:
