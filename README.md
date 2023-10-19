@@ -1,7 +1,7 @@
 # Frontend web, with javascript, css and HTML!
----
-Code: Free to use
-Learn on: YouTube
+
+Code: Free to use.
+Learn on: YouTube.
 ---
 + Practicing frontend skills.
 + Keeping all code fresh.
